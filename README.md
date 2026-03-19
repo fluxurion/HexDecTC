@@ -1,35 +1,35 @@
 # HexDec TC Converter
 
-Egy modern, Windows 11 stílusú .NET 9 WPF alkalmazás Hex -> Decimal és Decimal -> Hex konverzióhoz, beépített TrinityCore opcode támogatással.
+A modern, Windows 11-style .NET 9 WPF application for Hex -> Decimal and Decimal -> Hex conversion, featuring built-in TrinityCore opcode support.
 
-## Funkciók
+## Features
 
-- **Automatikus Konverzió**: Hexadecimális és Decimális értékek azonnali átalakítása oda-vissza.
-- **Opcode Támogatás**: Támogatja a WoW 10.2.7 és 12.0 verziók TrinityCore opcode-jait.
-- **Kereshető Lista**: Az összes elérhető opcode listázható és kereshető. A kiválasztott opcode értékei automatikusan kitöltik a mezőket.
-- **Vizuális Visszajelzés**: Ha a beírt érték egyezik egy opcode-dal, a lista automatikusan oda görget és felvillan.
-- **System Tray (Tálca) Integráció**: Az alkalmazás a tálcára kicsinyíthető, ahol folyamatosan fut.
-- **Always on Top**: Bekapcsolható opció, hogy az ablak minden más felett maradjon.
-- **Modern UI**: Dark theme támogatás (a címsoron is), éles szövegmegjelenítés és letisztult dizájn.
-- **Single-File**: Minden erőforrás (ikon, opcode-ok) be van ágyazva az .exe fájlba.
+- **Automatic Conversion**: Instant bi-directional conversion between Hexadecimal and Decimal values.
+- **Opcode Support**: Full support for TrinityCore opcodes for WoW versions 10.2.7 and 12.0.
+- **Searchable List**: All available opcodes are listed and searchable. Selecting an opcode automatically fills the conversion fields.
+- **Visual Feedback**: When an entered value matches an opcode, the list automatically scrolls to it and flashes for confirmation.
+- **System Tray Integration**: The application can be minimized to the system tray, where it continues to run in the background.
+- **Always on Top**: Optional toggle to keep the window above all other applications.
+- **Modern UI**: Dark theme support (including the title bar), sharp text rendering, and a clean, responsive design.
+- **Single-File**: All resources (icon, opcode data) are embedded directly into the .exe file.
 
-## Használat
+## Usage
 
-1. Töltsd le a legfrissebb kiadást a `publish` mappából.
-2. Indítsd el a `HexDecTC.exe`-t.
-3. Válaszd ki a kívánt WoW verziót a legördülő menüből.
-4. Írj be egy értéket vagy keress rá egy opcode nevére a listában.
+1. Download the latest release from the `publish` folder.
+2. Launch `HexDecTC.exe`.
+3. Select your desired WoW version from the dropdown menu.
+4. Enter a value in either field or search for an opcode name in the list.
 
-## Fejlesztés és Build
+## Development and Build
 
-A projekt lefordításához .NET 9 SDK szükséges.
+Building the project requires the .NET 9 SDK.
 
-### Build szkript
-A gyökérkönyvtárban található `build.bat` segítségével egyetlen, hordozható `.exe` fájlt készíthetsz:
+### Build Script
+Use the `build.bat` file in the root directory to create a single, portable `.exe` file:
 ```batch
 build.bat
 ```
-A végeredmény a `publish` mappába kerül.
+The resulting executable will be placed in the `publish` folder.
 
-## Licenc
-Ez a projekt ingyenesen használható és módosítható.
+## License
+This project is free to use and modify.
