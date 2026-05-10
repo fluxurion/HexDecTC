@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexDecTC", "HexDecTC.csproj", "{DBD7DF7C-72A5-EE98-E5F4-49D9211FEFBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBD7DF7C-72A5-EE98-E5F4-49D9211FEFBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD7DF7C-72A5-EE98-E5F4-49D9211FEFBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD7DF7C-72A5-EE98-E5F4-49D9211FEFBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD7DF7C-72A5-EE98-E5F4-49D9211FEFBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AD9BA43-9EF9-4ADC-918E-413E153C929C}
+	EndGlobalSection
+EndGlobal

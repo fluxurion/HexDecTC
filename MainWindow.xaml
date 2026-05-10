@@ -271,8 +271,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBox x:Name="OpcodeSearch" Background="#333337" Foreground="White" BorderBrush="#3f3f46" Padding="3" Margin="0,0,0,5" 
-                             Tag="Search Opcode..." TextChanged="OpcodeSearch_TextChanged" SelectionBrush="#3a7ebf"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="OpcodeSearch" Background="#333337" Foreground="White" BorderBrush="#3f3f46" Padding="3" Margin="0,0,0,5"
+                                 Tag="Search Opcode..." TextChanged="OpcodeSearch_TextChanged" SelectionBrush="#3a7ebf"/>
+                        <Button Grid.Column="1" Content="Copy" Width="55" Margin="5,0,0,5" Click="CopyOpcode_Click"/>
+                    </Grid>
                     <ListBox Grid.Row="1" x:Name="OpcodeList" SelectionChanged="OpcodeList_SelectionChanged" BorderThickness="0">
                         <!-- Items populated from code -->
                     </ListBox>
