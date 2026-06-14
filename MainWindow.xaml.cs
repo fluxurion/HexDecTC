@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Threading;
 using Forms = System.Windows.Forms;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
@@ -30,10 +31,15 @@ namespace HexDecTC
         private Forms.NotifyIcon? _notifyIcon;
         private bool _isUpdating = false;
         private bool _isExiting = false;
+        private string _settingsPath;
 
         public MainWindow()
         {
             InitializeComponent();
+            _settingsPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "HexDecTC", "settings.json");
+            LoadSettings();
             LoadOpcodes();
             UpdateOpcodeList(); // Ensure list is populated
             SetupTray();
@@ -46,6 +52,63 @@ namespace HexDecTC
             var hwnd = new WindowInteropHelper(this).Handle;
             int darkMode = 1;
             DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkMode, sizeof(int));
+        }
+
+        private void LoadSettings()
+        {
+            try
+            {
+                if (File.Exists(_settingsPath))
+                {
+                    var json = File.ReadAllText(_settingsPath);
+                    var settings = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+                    if (settings != null)
+                    {
+                        if (settings.TryGetValue("Version", out var ver) && ver is JsonElement verEl)
+                        {
+                            string version = verEl.GetString() ?? "12.0.5";
+                            foreach (ComboBoxItem item in VersionCombo.Items)
+                            {
+                                if (item.Content?.ToString() == version)
+                                {
+                                    VersionCombo.SelectedItem = item;
+                                    break;
+                                }
+                            }
+                        }
+                        if (settings.TryGetValue("AlwaysOnTop", out var aot) && aot is JsonElement aotEl)
+                        {
+                            bool val = aotEl.GetBoolean();
+                            AlwaysOnTopCheck.IsChecked = val;
+                            this.Topmost = val;
+                        }
+                        if (settings.TryGetValue("TrayOnClose", out var toc) && toc is JsonElement tocEl)
+                        {
+                            TrayOnCloseCheck.IsChecked = tocEl.GetBoolean();
+                        }
+                    }
+                }
+            }
+            catch { /* ignore settings load errors */ }
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(_settingsPath);
+                if (dir != null && !Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                var settings = new Dictionary<string, object>
+                {
+                    ["Version"] = (VersionCombo.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "12.0.5",
+                    ["AlwaysOnTop"] = AlwaysOnTopCheck.IsChecked ?? false,
+                    ["TrayOnClose"] = TrayOnCloseCheck.IsChecked ?? true
+                };
+                File.WriteAllText(_settingsPath, JsonSerializer.Serialize(settings));
+            }
+            catch { /* ignore settings save errors */ }
         }
 
         private void LoadOpcodes()
@@ -81,7 +144,7 @@ namespace HexDecTC
         {
             if (OpcodeList == null) return;
 
-            string version = (VersionCombo?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "12.0";
+            string version = (VersionCombo?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "12.0.5";
             string searchText = OpcodeSearch?.Text?.Trim().ToLower() ?? "";
 
             OpcodeList.Items.Clear();
@@ -115,7 +178,7 @@ namespace HexDecTC
             if (_isUpdating) return;
             if (OpcodeList.SelectedItem is string selectedName)
             {
-                string version = (VersionCombo.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "12.0";
+                string version = (VersionCombo.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "12.0.5";
                 if (_opcodesData.TryGetValue(version, out var opcodes))
                 {
                     // Find the hex value for this name
@@ -125,7 +188,7 @@ namespace HexDecTC
                         {
                             _isUpdating = true;
                             HexInput.Text = kvp.Key;
-                            
+
                             // Trigger hex to dec conversion
                             if (long.TryParse(kvp.Key.Substring(2), System.Globalization.NumberStyles.HexNumber, null, out long val))
                             {
@@ -143,7 +206,7 @@ namespace HexDecTC
         private void SetupTray()
         {
             _notifyIcon = new Forms.NotifyIcon();
-            
+
             try
             {
                 // Use Process.MainModule.FileName instead of Assembly.Location for single-file apps
@@ -173,7 +236,8 @@ namespace HexDecTC
             _notifyIcon.Visible = true;
             _notifyIcon.Text = "HexDec TC";
             _notifyIcon.Click += (s, e) => ShowWindow();
-            
+            _notifyIcon.BalloonTipClicked += (s, e) => ShowWindow();
+
             var contextMenu = new Forms.ContextMenuStrip();
             contextMenu.Items.Add("Show", null, (s, e) => ShowWindow());
             contextMenu.Items.Add("Exit", null, (s, e) => ExitApp());
@@ -196,13 +260,14 @@ namespace HexDecTC
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
+            SaveSettings();
             if (!_isExiting && TrayOnCloseCheck.IsChecked == true)
             {
                 e.Cancel = true;
                 this.Hide();
-                
+
                 // Show notification
-                _notifyIcon?.ShowBalloonTip(2000, "HexDec TC", "Az alkalmazás a tálcán továbbra is fut.", Forms.ToolTipIcon.Info);
+                _notifyIcon?.ShowBalloonTip(3000, "HexDec TC", "The application is still running in the system tray.\nClick here to restore.", Forms.ToolTipIcon.Info);
             }
             else
             {
@@ -276,9 +341,9 @@ namespace HexDecTC
 
         private void CheckOpcode(long val)
         {
-            string version = (VersionCombo.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "12.0";
+            string version = (VersionCombo.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "12.0.5";
             string hexStr = "0x" + val.ToString("X").ToUpper();
-            
+
             if (_opcodesData.TryGetValue(version, out var opcodes) && opcodes.TryGetValue(hexStr, out var name))
             {
                 // Find and select in list
@@ -341,10 +406,17 @@ namespace HexDecTC
         private void AlwaysOnTopCheck_Changed(object sender, RoutedEventArgs e)
         {
             this.Topmost = AlwaysOnTopCheck.IsChecked ?? false;
+            SaveSettings();
+        }
+
+        private void TrayOnCloseCheck_Changed(object sender, RoutedEventArgs e)
+        {
+            SaveSettings();
         }
 
         private void VersionCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SaveSettings();
             UpdateOpcodeList();
             if (DecInput != null && long.TryParse(DecInput.Text, out long val))
             {
@@ -361,8 +433,8 @@ namespace HexDecTC
 
         private void CopyHex_Click(object sender, RoutedEventArgs e) => Clipboard.SetText(HexInput.Text);
         private void CopyDec_Click(object sender, RoutedEventArgs e) => Clipboard.SetText(DecInput.Text);
-        
-        private void CopyOpcode_Click(object sender, RoutedEventArgs e) 
+
+        private void CopyOpcode_Click(object sender, RoutedEventArgs e)
         {
             if (OpcodeList.SelectedItem is string selectedName)
             {

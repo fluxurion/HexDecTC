@@ -11,7 +11,7 @@
         TextOptions.TextFormattingMode="Display"
         UseLayoutRounding="True"
         WindowStartupLocation="CenterScreen">
-    
+
     <Window.Resources>
         <!-- Dark ScrollBar Styles -->
         <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
@@ -71,12 +71,12 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <ToggleButton Name="ToggleButton" 
-                                          BorderBrush="{TemplateBinding BorderBrush}" 
-                                          Background="{TemplateBinding Background}" 
+                            <ToggleButton Name="ToggleButton"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          Background="{TemplateBinding Background}"
                                           Foreground="{TemplateBinding Foreground}"
                                           Grid.ColumnSpan="2" Focusable="false"
-                                          IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" 
+                                          IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                           ClickMode="Press">
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="ToggleButton">
@@ -230,7 +230,7 @@
                 </BeginStoryboard>
             </EventTrigger>
         </Grid.Triggers>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- Header -->
             <RowDefinition Height="Auto"/> <!-- Version/Checks -->
@@ -253,11 +253,12 @@
             <Grid Margin="0,0,0,15">
                 <ComboBox x:Name="VersionCombo" Width="85" HorizontalAlignment="Left" SelectionChanged="VersionCombo_SelectionChanged">
                     <ComboBoxItem Content="10.2.7"/>
-                    <ComboBoxItem Content="12.0" IsSelected="True"/>
+                    <ComboBoxItem Content="12.0.1"/>
+                    <ComboBoxItem Content="12.0.5" IsSelected="True"/>
                 </ComboBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on Top" Margin="0,0,15,0" Checked="AlwaysOnTopCheck_Changed" Unchecked="AlwaysOnTopCheck_Changed"/>
-                    <CheckBox x:Name="TrayOnCloseCheck" Content="Tray on Exit" IsChecked="True"/>
+                    <CheckBox x:Name="TrayOnCloseCheck" Content="Tray on Exit" IsChecked="True" Checked="TrayOnCloseCheck_Changed" Unchecked="TrayOnCloseCheck_Changed"/>
                 </StackPanel>
             </Grid>
 
@@ -272,13 +273,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         <TextBox x:Name="OpcodeSearch" Background="#333337" Foreground="White" BorderBrush="#3f3f46" Padding="3" Margin="0,0,0,5"
                                  Tag="Search Opcode..." TextChanged="OpcodeSearch_TextChanged" SelectionBrush="#3a7ebf"/>
-                        <Button Grid.Column="1" Content="Copy" Width="55" Margin="5,0,0,5" Click="CopyOpcode_Click"/>
+                        <Button Grid.Row="1" Content="Copy Opcode Name" Margin="0,0,0,5" Click="CopyOpcode_Click" HorizontalAlignment="Stretch" Padding="8,5"/>
                     </Grid>
                     <ListBox Grid.Row="1" x:Name="OpcodeList" SelectionChanged="OpcodeList_SelectionChanged" BorderThickness="0">
                         <!-- Items populated from code -->
@@ -317,7 +318,7 @@
             </StackPanel>
 
             <!-- Clear Button -->
-            <Button Content="Clear All" Background="Transparent" BorderBrush="#3f3f46" Foreground="White" Padding="15,7" Margin="0,15,0,5" Click="ClearAll_Click" HorizontalAlignment="Stretch"/>
+            <Button Content="Clear All" Background="#3f3f46" BorderBrush="#3f3f46" Foreground="White" Padding="15,10" Margin="0,15,0,5" Click="ClearAll_Click" HorizontalAlignment="Stretch"/>
         </StackPanel>
     </Grid>
 </Window>
