@@ -4,13 +4,23 @@
 .vscode/
 .vs/
 
-# Build outputs
+# Frontend build outputs
+dist/
+node_modules/
+
+# Rust build outputs
+src-tauri/target/
+src-tauri/gen/
+
+# Legacy build outputs
 bin/
 obj/
 publish/
 
-# Single-file publish artifacts
+# Misc
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
+app.png
+nul
