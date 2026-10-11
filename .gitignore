@@ -4,13 +4,8 @@
 .vscode/
 .vs/
 
-# Frontend build outputs
-dist/
-node_modules/
-
-# Rust build outputs
-src-tauri/target/
-src-tauri/gen/
+# C++ build outputs
+cpp/build/
 
 # Legacy build outputs
 bin/

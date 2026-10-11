@@ -1,0 +1,9 @@
+#include <windows.h>
+
+IDI_ICON1 ICON "app.ico"
+
+// UI documents + opcode data, served by the embedded file interface
+// (resource name = file name upper-cased, '.' -> '_').
+UI_RML RCDATA "../ui/ui.rml"
+UI_RCSS RCDATA "../ui/ui.rcss"
+OPCODES_JSON RCDATA "../../opcodes.json"

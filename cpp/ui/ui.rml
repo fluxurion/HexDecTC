@@ -1,0 +1,64 @@
+<rml>
+<head>
+    <title>HexDec TC</title>
+    <link type="text/rcss" href="ui.rcss"/>
+</head>
+<body data-model="app">
+<div id="root">
+    <div id="titlebar">
+        <div class="brand">HEXDEC TC<span class="gem"/></div>
+        <div class="wbtns">
+            <div class="wbtn" data-event-click="win('min')"><span class="ico">&#xE921;</span></div>
+            <div class="wbtn" data-event-click="win('max')"><span class="ico">&#xE922;</span></div>
+            <div class="wbtn close" data-event-click="win('close')"><span class="ico">&#xE8BB;</span></div>
+        </div>
+    </div>
+
+    <div id="main" class="pre">
+        <div id="controls">
+            <div class="chips">
+                <div class="chip" data-for="v : versions" data-class-active="v.active" data-event-click="select_version(v.id)">{{v.label}}</div>
+            </div>
+            <div id="switches">
+                <div class="switch" data-class-on="aot" data-event-click="toggle('aot')"><div class="track"><div class="knob"/></div><span>Always on Top</span></div>
+                <div class="switch" data-class-on="tray" data-event-click="toggle('tray')"><div class="track"><div class="knob"/></div><span>Tray on Exit</span></div>
+            </div>
+        </div>
+
+        <div id="oppanel">
+            <div id="searchrow"><input type="text" class="mono" id="search" data-value="search" placeholder="Search Opcode..." data-event-change="search_changed"/></div>
+            <div class="bar" data-event-click="copy_op">
+                <div class="glow"/>
+                <span class="ico play">&#xE8C8;</span>
+                <span class="lbl">Copy Opcode Name</span>
+            </div>
+            <div id="oplist">
+                <div id="sp_top"/>
+                <div class="row" data-for="r : rows" data-class-selected="r.sel" data-event-click="pick(r.name)">{{r.name}}</div>
+                <div id="sp_bot"/>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="flabel">HEXADECIMAL (0x...)</div>
+            <div class="frow">
+                <input type="text" class="mono" data-value="hex" data-event-change="hex_changed"/>
+                <div class="btn" data-event-click="paste('hex')">Paste</div>
+                <div class="btn" data-event-click="copy('hex')">Copy</div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="flabel">DECIMAL</div>
+            <div class="frow">
+                <input type="text" class="mono" data-value="dec" data-event-change="dec_changed"/>
+                <div class="btn" data-event-click="paste('dec')">Paste</div>
+                <div class="btn" data-event-click="copy('dec')">Copy</div>
+            </div>
+        </div>
+        <div class="btn clear" data-event-click="clear_all">Clear All</div>
+    </div>
+</div>
+
+<div id="toasts"/>
+</body>
+</rml>
