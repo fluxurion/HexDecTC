@@ -19,3 +19,7 @@ publish/
 *.sln.docstates
 app.png
 nul
+
+build/
+*.vcxproj*
+*.sln
